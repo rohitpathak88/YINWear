@@ -14,15 +14,22 @@ import android.os.Message;
 public abstract class EventLooper {
     private static class LooperCallback implements Handler.Callback {
         EventLooper mLooper;
+
         LooperCallback(EventLooper eventLooper) {
             mLooper = eventLooper;
         }
 
         @Override
         public final boolean handleMessage(Message msg) {
-            mLooper.eventHandler(msg.what, msg.arg1, msg.arg2, msg.obj);
+            mLooper.eventHandler(msg.what, msg.obj);
             return true;
         }
+//
+//        @Override
+//        public final boolean handleMessage(Message msg) {
+//            mLooper.eventHandler(msg.what, msg.arg1, msg.arg2, msg.obj);
+//            return true;
+//        }
     }
 
     private final Handler mHandler;
@@ -38,8 +45,8 @@ public abstract class EventLooper {
      *
      * @param evType    Event to process
      * @param cbIndex   Callback Index
-     * @param reqObject Request data object
-     * @return Request process status
+     * @param reqObject NetRequest data object
+     * @return NetRequest process status
      */
     protected boolean postRequest(int evType, int cbIndex, Object reqObject) {
         return postRequest(evType, cbIndex, 0, reqObject, 0L);
@@ -49,10 +56,21 @@ public abstract class EventLooper {
      * Used to post request into event loop
      *
      * @param evType    Event to process
+     * @param reqObject NetRequest data object
+     * @return NetRequest process status
+     */
+    protected boolean postRequest(int evType, Object reqObject) {
+        return postRequest(evType, 0, 0, reqObject, 0L);
+    }
+
+    /**
+     * Used to post request into event loop
+     *
+     * @param evType    Event to process
      * @param cbIndex   Callback Index
      * @param data      extra data
-     * @param reqObject Request data object
-     * @return Request process status
+     * @param reqObject NetRequest data object
+     * @return NetRequest process status
      */
     protected boolean postRequest(int evType, int cbIndex, int data, Object reqObject) {
         return postRequest(evType, cbIndex, data, reqObject, 0L);
@@ -63,8 +81,8 @@ public abstract class EventLooper {
      *
      * @param evType    Event to process
      * @param cbIndex   Callback Index
-     * @param reqObject Request data object
-     * @return Request process status
+     * @param reqObject NetRequest data object
+     * @return NetRequest process status
      */
     protected boolean postRequestAtFrontOfQueue(int evType, int cbIndex, Object reqObject) {
         /** Create new message object here */
@@ -84,9 +102,9 @@ public abstract class EventLooper {
      * @param evType    Event to process
      * @param cbIndex   Callback Index
      * @param data      extra data
-     * @param reqObject Request data object
+     * @param reqObject NetRequest data object
      * @param delay     Purpose delay
-     * @return Request process status
+     * @return NetRequest process status
      */
     protected boolean postRequest(int evType, int cbIndex, int data, Object reqObject, long delay) {
         /** Create new message object here */
@@ -132,10 +150,11 @@ public abstract class EventLooper {
         }
         return true;
     }
+//
+//    /**
+//     * Used to handle all scheduled events into child class
+//     */
+//    protected abstract void eventHandler(int evType, int cbIndex, int data, Object reqObject);
 
-    /**
-     * Used to handle all scheduled events into child class
-     */
-    protected abstract void eventHandler(int evType, int cbIndex, int data, Object reqObject);
-
+    protected abstract void eventHandler(int evType, Object reqObject);
 }

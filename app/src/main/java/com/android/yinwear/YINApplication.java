@@ -7,9 +7,12 @@ import com.android.yinwear.core.controller.CoreController;
 
 import static com.android.yinwear.BuildConfig.DEBUG;
 
+
 public class YINApplication extends Application {
 
     private static final String TAG = "YINApplication";
+
+    private CoreController mCoreController;
 
     @Override
     public void onCreate() {
@@ -21,8 +24,13 @@ public class YINApplication extends Application {
      * To initialize application modules
      */
     private void initCoreController() {
-        if (!CoreController.getInstance().init(getApplicationContext())) {
+        mCoreController = CoreController.getInstance();
+        if (!mCoreController.init(getApplicationContext())) {
             if (DEBUG) Log.e(TAG, "Failed to initialize Core Controller");
         }
+    }
+
+    public CoreController getCoreController() {
+        return mCoreController;
     }
 }

@@ -5,4 +5,6 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_yin">Hello YIN!</string>
+    <string name="login">LOGIN!</string>
+    <string name="phone_hint">Enter Pin</string>
 </resources>
