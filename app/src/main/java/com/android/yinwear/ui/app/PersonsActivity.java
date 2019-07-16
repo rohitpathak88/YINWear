@@ -48,12 +48,12 @@ public class PersonsActivity extends BaseActivity {
                     Intent intentToHome = new Intent(PersonsActivity.this, HomeActivity.class);
                     intentToHome.putExtra("person", personDetail);
                     startActivity(intentToHome);
-                    finish();
+//                    finish();
                 } else {
                     Intent intentToVerification = new Intent(PersonsActivity.this, PinVerificationActivity.class);
                     intentToVerification.putExtra("person", personDetail);
                     startActivity(intentToVerification);
-                    finish();
+//                    finish();
                 }
             }
         }));

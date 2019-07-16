@@ -105,6 +105,7 @@ public class SplashActivity extends BaseActivity {
                     editor.putString(Constants.PREFERENCE.AUTH_TOKEN, loginResp.getAuthToken());
                     editor.putString(Constants.PREFERENCE.ACCOUNT_ID, loginResp.getYin_account_id());
                     editor.putBoolean(Constants.PREFERENCE.IS_LOGGED_IN, true);
+                    isLoggedIn = true;
                     editor.apply();
                     processPersonsRequest(loginResp.getAuthToken(), loginResp.getYin_account_id());
                 } else {

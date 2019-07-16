@@ -35,7 +35,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
 
 
     private static final String TAG = "NetworkManager";
-    private static final boolean DUMMY_RESP = true;
+    private static final boolean DUMMY_RESP = false;
     private Handler mNetworkHandler;
     private static NetworkManager INSTANCE;
     private Context mContext;
@@ -55,6 +55,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
         mCallbackHandler = callbackHandler;
         mNetworkHandler = new Handler(this);
         mRequestQueue = Volley.newRequestQueue(context);
+        mRequestQueue.addRequestFinishedListener(this);
     }
 
     public void postRequest(NetRequest request) {
@@ -180,8 +181,9 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
 
     @Override
     public void onRequestFinished(Request<Object> request) {
+        Log.d(TAG, "onRequestFinished()");
         synchronized (mRequestList) {
-            mRequestList.remove(request);
+            mRequestList.remove(0);
             if (mRequestList.size() > 0) {
                 mNetworkHandler.sendMessage(mNetworkHandler.obtainMessage(
                         mRequestList.get(0).getRequestType(), mRequestList.get(0)));
