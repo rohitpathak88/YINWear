@@ -15,7 +15,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.yinwear.core.network.model.request.NetRequest;
 import com.android.yinwear.core.network.model.response.BaseResponse;
+import com.android.yinwear.core.network.model.response.DeviceResp;
+import com.android.yinwear.core.network.model.response.DeviceRespObj;
 import com.android.yinwear.core.utils.Constants;
+import com.android.yinwear.core.utils.Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +38,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
 
 
     private static final String TAG = "NetworkManager";
-    private static final boolean DUMMY_RESP = false;
+    private static final boolean DUMMY_DEVICES_RESP = false;
     private Handler mNetworkHandler;
     private static NetworkManager INSTANCE;
     private Context mContext;
@@ -50,16 +53,8 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
         return INSTANCE;
     }
 
-    public void initNetworkManager(Context context, Handler callbackHandler) {
-        mContext = context;
-        mCallbackHandler = callbackHandler;
-        mNetworkHandler = new Handler(this);
-        mRequestQueue = Volley.newRequestQueue(context);
-        mRequestQueue.addRequestFinishedListener(this);
-    }
-
     public void postRequest(NetRequest request) {
-        Log.d(TAG,"postRequest");
+        Log.d(TAG, "postRequest");
         if (mRequestList.size() == 0) {
             mNetworkHandler.sendMessage(mNetworkHandler.obtainMessage(
                     request.getRequestType(), request));
@@ -80,10 +75,18 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
         return false;
     }
 
+    public void initNetworkManager(Context context, Handler callbackHandler) {
+        mContext = context;
+        mCallbackHandler = callbackHandler;
+        mNetworkHandler = new Handler(this);
+        mRequestQueue = Volley.newRequestQueue(context);
+        mRequestQueue.addRequestFinishedListener(this);
+    }
+
     private void stringRequest(final NetRequest req) {
         Bundle requestParam = (Bundle) req.getRequestParam();
         final Map<String, String> params = getParams(requestParam);
-        if (DUMMY_RESP) {
+        if (DUMMY_DEVICES_RESP && Constants.REQUEST.DEVICE_REQUEST == req.getRequestId()) {
             BaseResponse baseResponse = new BaseResponse();
             baseResponse.setRequest(req);
             baseResponse.setResponseCode(200);
@@ -94,6 +97,10 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
                     break;
                 case Constants.REQUEST.PERSON_REQUEST:
                     baseResponse.setResponse(personResp);
+                    break;
+                case Constants.REQUEST.DEVICE_REQUEST:
+                    String dummyDeviceResponse = getDummyDeviceResponse();
+                    baseResponse.setResponse(dummyDeviceResponse);
                     break;
             }
             Message msg = Message.obtain();
@@ -138,6 +145,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
                         Message msg = Message.obtain();
                         msg.what = Constants.NETWORK_RESPONSE;
                         msg.obj = baseResponse;
+                        msg.arg1 = Constants.NETWORK_RESPONSE;
                         mCallbackHandler.sendMessage(msg);
                     }
                 },
@@ -155,21 +163,53 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
                         msg.obj = baseResponse;
                         mCallbackHandler.sendMessage(msg);
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams(){
+            protected Map<String, String> getParams() {
                 return params;
             }
 
         };
 
-        Log.d(TAG,"Request url: " + stringRequest.getUrl() + "Req Params: " + params);
+        Log.d(TAG, "Request url: " + stringRequest.getUrl() + "Req Params: " + params);
         mRequestQueue.add(stringRequest);
 
     }
 
-    private static Map<String,String> getParams(Bundle params) {
-        Map<String,String> param = new HashMap<>();
+    private String getDummyDeviceResponse() {
+        ArrayList<DeviceRespObj> deviceRespObjArrayList = new ArrayList<>();
+        DeviceRespObj deviceRespObj1 = new DeviceRespObj();
+        deviceRespObj1.setDeviceId("id_01");
+        deviceRespObj1.setName("XBox");
+        deviceRespObj1.setServiceProvider("Kidslox");
+        deviceRespObj1.setPersonIds(new ArrayList<String>() {
+            {
+                add("9D75B01F-97BF-4B8A-96B1-717EFCCB939F");
+                add("0F5188F5-9B26-431E-BD15-E7ED98E898A7");
+            }
+        });
+
+        DeviceRespObj deviceRespObj2 = new DeviceRespObj();
+        deviceRespObj2.setDeviceId("id_02");
+        deviceRespObj2.setName("XBox2");
+        deviceRespObj2.setServiceProvider("Qtime");
+        deviceRespObj2.setPersonIds(new ArrayList<String>() {
+            {
+                add("9D75B01F-97BF-4B8A-96B1-717EFCCB939F");
+                add("0F5188F5-9B26-431E-BD15-E7ED98E898A7");
+                add("cfa40b29-f4b7-42ef-af2f-e333930d4b47");
+                add("827BB2F6-716F-447C-9CD1-F8D018CBCDFA");
+            }
+        });
+        deviceRespObjArrayList.add(deviceRespObj1);
+        deviceRespObjArrayList.add(deviceRespObj2);
+        DeviceResp deviceResp = new DeviceResp("", true, deviceRespObjArrayList);
+
+        return Utility.getJsonString(deviceResp);
+    }
+
+    private static Map<String, String> getParams(Bundle params) {
+        Map<String, String> param = new HashMap<>();
         if (null != params) {
             for (String requestParam : params.keySet()) {
                 param.put(requestParam,

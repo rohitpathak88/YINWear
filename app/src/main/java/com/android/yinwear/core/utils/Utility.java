@@ -1,5 +1,8 @@
 package com.android.yinwear.core.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -26,6 +29,13 @@ public class Utility {
         return new JSONObject();
     }
 
+    public static String getJsonString(Object objToConvert) {
+        if (null != objToConvert) {
+            Gson gson = new Gson();
+            return gson.toJson(objToConvert);
+        } else return "";
+    }
+
     public static Object getDataObj(String jsonString, Class responseClass) {
         if (!TextUtils.isEmpty(jsonString)) {
             try {
@@ -37,5 +47,14 @@ public class Utility {
             Log.e(TAG, "Null JSON string passed, return null object.");
         }
         return null;
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        Log.d(TAG, "Utility: isNetworkAvailable()> " + isConnected);
+        return isConnected;
     }
 }

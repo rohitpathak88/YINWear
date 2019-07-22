@@ -25,6 +25,9 @@ public class SplashActivity extends BaseActivity {
     private String mRestCallbackId;
     private boolean userDataAvailable;
     private boolean isLoggedIn;
+    private PersonsResp mPersonResponse;
+    private String mAuthToken;
+    private String mYINAccountId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,9 @@ public class SplashActivity extends BaseActivity {
         } else {
             if (!userDataAvailable) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                String authToken = sharedPref.getString(Constants.PREFERENCE.AUTH_TOKEN, "");
-                String accountId = sharedPref.getString(Constants.PREFERENCE.ACCOUNT_ID, "");
-                processPersonsRequest(authToken, accountId);
+                mAuthToken = sharedPref.getString(Constants.PREFERENCE.AUTH_TOKEN, "");
+                mYINAccountId = sharedPref.getString(Constants.PREFERENCE.ACCOUNT_ID, "");
+                processDevicesRequest();
             }
         }
     }
@@ -63,6 +66,7 @@ public class SplashActivity extends BaseActivity {
         mHandler.removeMessages(Constants.APP_CONSTANTS.EVENT_RETRY);
         if (userDataAvailable) {
             Intent intentToPersons = new Intent(SplashActivity.this, PersonsActivity.class);
+            intentToPersons.putExtra("person_resp", mPersonResponse);
             startActivity(intentToPersons);
             finish();
         } else {
@@ -77,19 +81,30 @@ public class SplashActivity extends BaseActivity {
         reqParam.putString("password", "MDgaw19");
         NetRequest loginRequest = new NetRequest(Constants.REQUEST.LOGIN_REQUEST, Request.Method.POST,
                 Constants.URL.LOGIN, reqParam);
-        coreController.addRequest(Constants.NETWORK_REQUEST, loginRequest);
+        coreController.addRequest(Constants.NETWORK_REQUEST, loginRequest, false);
     }
 
-    private void processPersonsRequest(String authToken, String accountId) {
+    private void processPersonsRequest() {
         CoreController coreController = ((YINApplication) this.getApplication()).getCoreController();
 
         Bundle reqParam = new Bundle();
-        reqParam.putString("authentication_token", authToken);
-        reqParam.putString("yin_account_id", accountId);
+        reqParam.putString("authentication_token", mAuthToken);
+        reqParam.putString("yin_account_id", mYINAccountId);
 
         NetRequest personRequest = new NetRequest(Constants.REQUEST.PERSON_REQUEST, Request.Method.POST,
                 Constants.URL.PERSONS, reqParam);
-        coreController.addRequest(Constants.NETWORK_REQUEST, personRequest);
+        coreController.addRequest(Constants.NETWORK_REQUEST, personRequest, true);
+    }
+
+    private void processDevicesRequest() {
+        CoreController coreController = ((YINApplication) this.getApplication()).getCoreController();
+        Bundle reqParam = new Bundle();
+        reqParam.putString("authentication_token", mAuthToken);
+        reqParam.putString("yin_account_id", mYINAccountId);
+
+        NetRequest deviceRequest = new NetRequest(Constants.REQUEST.DEVICE_REQUEST, Request.Method.POST,
+                Constants.URL.DEVICES, reqParam);
+        coreController.addRequest(Constants.NETWORK_REQUEST, deviceRequest, true);
     }
 
     @Override
@@ -106,25 +121,48 @@ public class SplashActivity extends BaseActivity {
                     editor.putString(Constants.PREFERENCE.ACCOUNT_ID, loginResp.getYin_account_id());
                     editor.putBoolean(Constants.PREFERENCE.IS_LOGGED_IN, true);
                     isLoggedIn = true;
+                    mAuthToken = loginResp.getAuthToken();
+                    mYINAccountId = loginResp.getYin_account_id();
                     editor.apply();
-                    processPersonsRequest(loginResp.getAuthToken(), loginResp.getYin_account_id());
+                    processDevicesRequest();
                 } else {
                     Toast.makeText(this, baseResponse.getResponse().toString(), Toast.LENGTH_LONG).show();
                 }
+            }
+            return true;
+            case Constants.REQUEST.DEVICE_REQUEST: {
+//                BaseResponse baseResponse = (BaseResponse) msg.obj;
+//                String responseString = baseResponse.getResponse().toString();
+                processPersonsRequest();
+//                if (baseResponse.getResponseCode() == 200) {
+//                } else {
+//                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//                    SharedPreferences.Editor editor = sharedPref.edit();
+//                    editor.remove(Constants.PREFERENCE.AUTH_TOKEN);
+//                    editor.remove(Constants.PREFERENCE.ACCOUNT_ID);
+//                    editor.remove(Constants.PREFERENCE.IS_LOGGED_IN);
+//                    isLoggedIn = false;
+//                    editor.apply();
+//                    processLoginRequest();
+//                    Toast.makeText(this, responseString, Toast.LENGTH_LONG).show();
+//                }
             }
             return true;
             case Constants.REQUEST.PERSON_REQUEST: {
                 BaseResponse baseResponse = (BaseResponse) msg.obj;
                 String responseString = baseResponse.getResponse().toString();
                 if (baseResponse.getResponseCode() == 200) {
-                    PersonsResp personResp = (PersonsResp) Utility.getDataObj(responseString, PersonsResp.class);
-                    Log.d(TAG, "PERSON_REQUEST SUCCESSFUL");
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(Constants.PREFERENCE.PERSON_RESPONSE, responseString);
-                    editor.apply();
+                    mPersonResponse = (PersonsResp) Utility.getDataObj(responseString, PersonsResp.class);
                     userDataAvailable = true;
                 } else {
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.remove(Constants.PREFERENCE.AUTH_TOKEN);
+                    editor.remove(Constants.PREFERENCE.ACCOUNT_ID);
+                    editor.remove(Constants.PREFERENCE.IS_LOGGED_IN);
+                    isLoggedIn = false;
+                    editor.apply();
+                    processLoginRequest();
                     Toast.makeText(this, responseString, Toast.LENGTH_LONG).show();
                 }
             }

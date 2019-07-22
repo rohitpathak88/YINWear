@@ -1,20 +1,18 @@
 package com.android.yinwear.ui.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
-import android.preference.PreferenceManager;
+import android.os.Parcelable;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
 
 import com.android.yinwear.R;
-import com.android.yinwear.core.network.model.response.PersonDetail;
+import com.android.yinwear.core.db.entity.PersonDetail;
 import com.android.yinwear.core.network.model.response.PersonsResp;
-import com.android.yinwear.core.utils.Constants;
-import com.android.yinwear.core.utils.Utility;
 
 import java.util.List;
 
@@ -28,17 +26,25 @@ public class PersonsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_persons);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String strPersonResp = sharedPref.getString(Constants.PREFERENCE.PERSON_RESPONSE, "");
-        if (!TextUtils.isEmpty(strPersonResp)) {
-            PersonsResp personResp = (PersonsResp) Utility.getDataObj(strPersonResp, PersonsResp.class);
-            mPersonList = personResp.getPersonList();
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//        String strPersonResp = sharedPref.getString(Constants.PREFERENCE.PERSON_RESPONSE, "");
+//        if (!TextUtils.isEmpty(strPersonResp)) {
+//            PersonsResp personResp = (PersonsResp) Utility.getDataObj(strPersonResp, PersonsResp.class);
+//            mPersonList = personResp.getPersonList();
+//        }
+        Parcelable personResp = getIntent().getParcelableExtra("person_resp");
+        if (personResp != null) {
+            mPersonList = ((PersonsResp) personResp).getPersonList();
+            populatePersonList();
         }
-        populatePersonList();
     }
 
     private void populatePersonList() {
-        WearableRecyclerView recyclerView = findViewById(R.id.people_list);
+        if (mPersonList == null || mPersonList.isEmpty()) {
+            Toast.makeText(this, "Empty list", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        WearableRecyclerView recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new PersonsAdapter(this, mPersonList, new PersonsAdapter.AdapterCallback() {
             @Override

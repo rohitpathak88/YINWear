@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.android.yinwear.YINApplication;
 import com.android.yinwear.core.controller.CoreController;
-import com.android.yinwear.core.network.model.response.PersonDetail;
+import com.android.yinwear.core.db.entity.PersonDetail;
 
 public class BaseActivity extends WearableActivity implements Handler.Callback  {
 
