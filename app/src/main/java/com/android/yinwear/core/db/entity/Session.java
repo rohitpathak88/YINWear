@@ -20,26 +20,26 @@ public class Session implements Parcelable {
     @ColumnInfo(name = "device_id")
     private String deviceId;
 
-    @SerializedName("person_id")
-    @ColumnInfo(name = "person_id")
-    private String personId;
+    @SerializedName("user_id")
+    @ColumnInfo(name = "user_id")
+    private String userId;
 
-    public Session(String deviceId, String personId) {
+    public Session(String deviceId, String userId) {
         this.deviceId = deviceId;
-        this.personId = personId;
+        this.userId = userId;
     }
 
     protected Session(Parcel in) {
         id = in.readInt();
         deviceId = in.readString();
-        personId = in.readString();
+        userId = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(deviceId);
-        dest.writeString(personId);
+        dest.writeString(userId);
     }
 
     @Override
@@ -75,11 +75,11 @@ public class Session implements Parcelable {
         this.deviceId = deviceId;
     }
 
-    public String getPersonId() {
-        return personId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPersonId(String personId) {
-        this.personId = personId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

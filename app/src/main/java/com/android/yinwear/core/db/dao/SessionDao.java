@@ -16,8 +16,8 @@ public interface SessionDao {
     @Query("SELECT * FROM devicedetail")
     List<Session> getAll();
 
-    @Query("SELECT device_id FROM session WHERE person_id IN (:personIds)")
-    List<String> loadDevicesByPersonIds(String[] personIds);
+    @Query("SELECT device_id FROM session WHERE user_id IN (:userIds)")
+    List<String> loadDevicesByUserIds(String[] userIds);
 
     @Insert
     void insert(Session session);

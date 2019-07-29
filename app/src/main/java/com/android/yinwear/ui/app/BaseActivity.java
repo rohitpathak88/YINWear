@@ -9,20 +9,20 @@ import androidx.annotation.Nullable;
 
 import com.android.yinwear.YINApplication;
 import com.android.yinwear.core.controller.CoreController;
-import com.android.yinwear.core.db.entity.PersonDetail;
+import com.android.yinwear.core.db.entity.UserDetail;
 
 public class BaseActivity extends WearableActivity implements Handler.Callback  {
 
     protected Handler mHandler;
     protected CoreController mCoreController;
-    protected PersonDetail mPersonDetail;
+    protected UserDetail mUserDetail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHandler = new Handler(this);
         mCoreController = ((YINApplication) this.getApplication()).getCoreController();
-        mPersonDetail = getIntent().getParcelableExtra("person");
+        mUserDetail = getIntent().getParcelableExtra("user");
     }
 
     @Override

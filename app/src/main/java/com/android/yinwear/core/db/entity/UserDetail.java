@@ -10,26 +10,26 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 @Entity
-public class PersonDetail implements Parcelable {
+public class UserDetail implements Parcelable {
 
-    protected PersonDetail(Parcel in) {
+    protected UserDetail(Parcel in) {
         id = in.readInt();
-        personId = in.readString();
+        userId = in.readString();
         firstName = in.readString();
         lastName = in.readString();
         inactive = in.readByte() != 0;
         pin = in.readString();
     }
 
-    public static final Creator<PersonDetail> CREATOR = new Creator<PersonDetail>() {
+    public static final Creator<UserDetail> CREATOR = new Creator<UserDetail>() {
         @Override
-        public PersonDetail createFromParcel(Parcel in) {
-            return new PersonDetail(in);
+        public UserDetail createFromParcel(Parcel in) {
+            return new UserDetail(in);
         }
 
         @Override
-        public PersonDetail[] newArray(int size) {
-            return new PersonDetail[size];
+        public UserDetail[] newArray(int size) {
+            return new UserDetail[size];
         }
     };
 
@@ -45,9 +45,9 @@ public class PersonDetail implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @SerializedName("person_id")
-    @ColumnInfo(name = "person_id")
-    private String personId;
+    @SerializedName("user_id")
+    @ColumnInfo(name = "user_id")
+    private String userId;
 
     @SerializedName("first_name")
     @ColumnInfo(name = "first_name")
@@ -65,11 +65,11 @@ public class PersonDetail implements Parcelable {
     @ColumnInfo(name = "pin")
     private String pin;
 
-    public PersonDetail() {
+    public UserDetail() {
     }
 
-    public void setPersonId(String personId) {
-        this.personId = personId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setFirstName(String firstName) {
@@ -100,8 +100,8 @@ public class PersonDetail implements Parcelable {
         return inactive;
     }
 
-    public String getPersonId() {
-        return personId;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPin() {
@@ -116,7 +116,7 @@ public class PersonDetail implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(personId);
+        dest.writeString(userId);
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeByte((byte) (inactive ? 1 : 0));

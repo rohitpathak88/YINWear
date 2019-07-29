@@ -95,8 +95,8 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
                 case Constants.REQUEST.LOGIN_REQUEST:
                     baseResponse.setResponse(loginResp);
                     break;
-                case Constants.REQUEST.PERSON_REQUEST:
-                    baseResponse.setResponse(personResp);
+                case Constants.REQUEST.USER_REQUEST:
+                    baseResponse.setResponse(userResp);
                     break;
                 case Constants.REQUEST.DEVICE_REQUEST:
                     String dummyDeviceResponse = getDummyDeviceResponse();
@@ -182,7 +182,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
         deviceRespObj1.setDeviceId("id_01");
         deviceRespObj1.setName("XBox");
         deviceRespObj1.setServiceProvider("Kidslox");
-        deviceRespObj1.setPersonIds(new ArrayList<String>() {
+        deviceRespObj1.setUserIds(new ArrayList<String>() {
             {
                 add("9D75B01F-97BF-4B8A-96B1-717EFCCB939F");
                 add("0F5188F5-9B26-431E-BD15-E7ED98E898A7");
@@ -193,7 +193,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
         deviceRespObj2.setDeviceId("id_02");
         deviceRespObj2.setName("XBox2");
         deviceRespObj2.setServiceProvider("Qtime");
-        deviceRespObj2.setPersonIds(new ArrayList<String>() {
+        deviceRespObj2.setUserIds(new ArrayList<String>() {
             {
                 add("9D75B01F-97BF-4B8A-96B1-717EFCCB939F");
                 add("0F5188F5-9B26-431E-BD15-E7ED98E898A7");
@@ -232,7 +232,7 @@ public class NetworkManager implements Handler.Callback, RequestQueue.RequestFin
     }
 
     private String loginResp = "{\"yin_account_id\": \"CFA15131-D6E5-4C6B-9F96-556D3BBAC3D3\", \"message\": \"\", \"success\": true, \"authentication_token\": \"8fe59aa55f9231b695e2c43416c990341788b49b8bea0e0df05\"}\n";
-    private String personResp = "{\"persons\": [{\"first_name\":\"Rohit\", \"last_name\":\"Pathak\", \"pin\":\"1234\"}, {\"first_name\":\"YIN\", \"last_name\":\"Yo\", \"pin\":\"\"}],\n" +
+    private String userResp = "{\"users\": [{\"first_name\":\"Rohit\", \"last_name\":\"Pathak\", \"pin\":\"1234\"}, {\"first_name\":\"YIN\", \"last_name\":\"Yo\", \"pin\":\"\"}],\n" +
             "    \"message\": \"\",\n" +
             "    \"success\": true\n" +
             "}";

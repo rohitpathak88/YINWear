@@ -12,7 +12,7 @@
     <application
         android:name=".YINApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault"
@@ -43,7 +43,7 @@
 
         <activity android:name=".ui.app.HomeActivity" />
 
-        <activity android:name=".ui.app.PersonsActivity" />
+        <activity android:name=".ui.app.UserActivity" />
 
 
         <activity android:name=".ui.app.BaseActivity" />

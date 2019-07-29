@@ -11,53 +11,53 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
 
 import com.android.yinwear.R;
-import com.android.yinwear.core.db.entity.PersonDetail;
-import com.android.yinwear.core.network.model.response.PersonsResp;
+import com.android.yinwear.core.db.entity.UserDetail;
+import com.android.yinwear.core.network.model.response.UsersResp;
 
 import java.util.List;
 
-public class PersonsActivity extends BaseActivity {
+public class UserActivity extends BaseActivity {
 
-    private static final String TAG = "PersonsActivity";
+    private static final String TAG = "UserActivity";
     private String mRestCallbackId;
-    private List<PersonDetail> mPersonList;
+    private List<UserDetail> mUserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_persons);
+        setContentView(R.layout.activity_users);
 //        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//        String strPersonResp = sharedPref.getString(Constants.PREFERENCE.PERSON_RESPONSE, "");
-//        if (!TextUtils.isEmpty(strPersonResp)) {
-//            PersonsResp personResp = (PersonsResp) Utility.getDataObj(strPersonResp, PersonsResp.class);
-//            mPersonList = personResp.getPersonList();
+//        String strUserResp = sharedPref.getString(Constants.PREFERENCE.USER_RESPONSE, "");
+//        if (!TextUtils.isEmpty(strUserResp)) {
+//            UsersResp userResp = (UsersResp) Utility.getDataObj(strUserResp, UsersResp.class);
+//            mUserList = userResp.getUserList();
 //        }
-        Parcelable personResp = getIntent().getParcelableExtra("person_resp");
-        if (personResp != null) {
-            mPersonList = ((PersonsResp) personResp).getPersonList();
-            populatePersonList();
+        Parcelable userResp = getIntent().getParcelableExtra("user_resp");
+        if (userResp != null) {
+            mUserList = ((UsersResp) userResp).getUserList();
+            populateUserList();
         }
     }
 
-    private void populatePersonList() {
-        if (mPersonList == null || mPersonList.isEmpty()) {
+    private void populateUserList() {
+        if (mUserList == null || mUserList.isEmpty()) {
             Toast.makeText(this, "Empty list", Toast.LENGTH_SHORT).show();
             return;
         }
         WearableRecyclerView recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new PersonsAdapter(this, mPersonList, new PersonsAdapter.AdapterCallback() {
+        recyclerView.setAdapter(new UserAdapter(this, mUserList, new UserAdapter.AdapterCallback() {
             @Override
             public void onItemClicked(Integer position) {
-                PersonDetail personDetail = mPersonList.get(position);
-                if (TextUtils.isEmpty(personDetail.getPin())) {
-                    Intent intentToHome = new Intent(PersonsActivity.this, HomeActivity.class);
-                    intentToHome.putExtra("person", personDetail);
+                UserDetail userDetail = mUserList.get(position);
+                if (TextUtils.isEmpty(userDetail.getPin())) {
+                    Intent intentToHome = new Intent(UserActivity.this, HomeActivity.class);
+                    intentToHome.putExtra("user", userDetail);
                     startActivity(intentToHome);
 //                    finish();
                 } else {
-                    Intent intentToVerification = new Intent(PersonsActivity.this, PinVerificationActivity.class);
-                    intentToVerification.putExtra("person", personDetail);
+                    Intent intentToVerification = new Intent(UserActivity.this, PinVerificationActivity.class);
+                    intentToVerification.putExtra("user", userDetail);
                     startActivity(intentToVerification);
 //                    finish();
                 }

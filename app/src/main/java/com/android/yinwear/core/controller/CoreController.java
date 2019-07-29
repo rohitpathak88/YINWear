@@ -10,14 +10,14 @@ import android.util.Log;
 import com.android.yinwear.YINApplication;
 import com.android.yinwear.core.db.AppDatabase;
 import com.android.yinwear.core.db.entity.DeviceDetail;
-import com.android.yinwear.core.db.entity.PersonDetail;
+import com.android.yinwear.core.db.entity.UserDetail;
 import com.android.yinwear.core.db.entity.Session;
 import com.android.yinwear.core.network.NetworkManager;
 import com.android.yinwear.core.network.model.request.NetRequest;
 import com.android.yinwear.core.network.model.response.BaseResponse;
 import com.android.yinwear.core.network.model.response.DeviceResp;
 import com.android.yinwear.core.network.model.response.DeviceRespObj;
-import com.android.yinwear.core.network.model.response.PersonsResp;
+import com.android.yinwear.core.network.model.response.UsersResp;
 import com.android.yinwear.core.utils.Constants;
 import com.android.yinwear.core.utils.Utility;
 
@@ -158,15 +158,15 @@ public class CoreController extends EventLooper implements Handler.Callback {
     private void getResponseFromDb(NetRequest reqObj) {
         BaseResponse baseResponse = new BaseResponse();
         switch (reqObj.getRequestId()) {
-            case Constants.REQUEST.PERSON_REQUEST: {
-                List<PersonDetail> personsList = mAppDatabase.personDao().getAll();
+            case Constants.REQUEST.USER_REQUEST: {
+                List<UserDetail> usersList = mAppDatabase.userDao().getAll();
                 Message msg = Message.obtain();
                 baseResponse.setRequest(reqObj);
                 baseResponse.setResponseCode(200);
-                PersonsResp personsResp = new PersonsResp("", true,
-                        new ArrayList<>(personsList));
+                UsersResp usersResp = new UsersResp("", true,
+                        new ArrayList<>(usersList));
 
-                baseResponse.setResponse(Utility.getJsonString(personsResp));
+                baseResponse.setResponse(Utility.getJsonString(usersResp));
                 msg.what = reqObj.getRequestId();
                 msg.obj = baseResponse;
                 msg.arg1 = Constants.GET_RESPONSE_FROM_DB;
@@ -186,8 +186,8 @@ public class CoreController extends EventLooper implements Handler.Callback {
     private void getDataFromDb(NetRequest reqObj) {
         Object data = null;
         switch (reqObj.getRequestId()) {
-            case Constants.REQUEST.DEVICE_LIST_FOR_PERSON_DB_REQUEST:
-                List<String> deviceIds = mAppDatabase.sessionDao().loadDevicesByPersonIds(
+            case Constants.REQUEST.DEVICE_LIST_FOR_USER_DB_REQUEST:
+                List<String> deviceIds = mAppDatabase.sessionDao().loadDevicesByUserIds(
                         new String[]{(String) reqObj.getRequestParam()});
                 List<DeviceDetail> deviceList = new ArrayList<>();
                 if (deviceIds == null || deviceIds.isEmpty()) break;
@@ -220,17 +220,17 @@ public class CoreController extends EventLooper implements Handler.Callback {
         NetRequest request = baseResponse.getRequest();
         if (request != null) {
             switch (request.getRequestId()) {
-                case Constants.REQUEST.PERSON_REQUEST: {
+                case Constants.REQUEST.USER_REQUEST: {
                     String responseString = baseResponse.getResponse().toString();
                     if (baseResponse.getResponseCode() == 200) {
-                        PersonsResp personResp = (PersonsResp) Utility.getDataObj(responseString, PersonsResp.class);
-                        assert personResp != null;
-                        ArrayList<PersonDetail> personList = personResp.getPersonList();
-                        if (personList == null || personList.isEmpty())
+                        UsersResp userResp = (UsersResp) Utility.getDataObj(responseString, UsersResp.class);
+                        assert userResp != null;
+                        ArrayList<UserDetail> userList = userResp.getUserList();
+                        if (userList == null || userList.isEmpty())
                             return;
-                        mBackgroundHandler.sendMessage(mBackgroundHandler.obtainMessage(Constants.SAVE_PERSON_RESPONSE_TO_DB,
-                                personList.toArray(
-                                        new PersonDetail[personList.size()])));
+                        mBackgroundHandler.sendMessage(mBackgroundHandler.obtainMessage(Constants.SAVE_USER_RESPONSE_TO_DB,
+                                userList.toArray(
+                                        new UserDetail[userList.size()])));
                     }
                 }
                 break;
@@ -267,9 +267,9 @@ public class CoreController extends EventLooper implements Handler.Callback {
                 case Constants.GET_DATA_FROM_DB:
                     getDataFromDb((NetRequest) msg.obj);
                     break;
-                case Constants.SAVE_PERSON_RESPONSE_TO_DB:
-                    mAppDatabase.personDao().deleteAll();
-                    mAppDatabase.personDao().insertAll((PersonDetail[]) msg.obj);
+                case Constants.SAVE_USER_RESPONSE_TO_DB:
+                    mAppDatabase.userDao().deleteAll();
+                    mAppDatabase.userDao().insertAll((UserDetail[]) msg.obj);
                     break;
                 case Constants.SAVE_DEVICE_RESPONSE_TO_DB:
                     ArrayList<DeviceRespObj> deviceRespObjs = (ArrayList<DeviceRespObj>) msg.obj;
@@ -287,11 +287,11 @@ public class CoreController extends EventLooper implements Handler.Callback {
             DeviceRespObj deviceRespObj = deviceRespObjs.get(i);
             deviceArray[i] = new DeviceDetail(deviceRespObj.getDeviceId(), deviceRespObj.getDeviceType(),
                     deviceRespObj.getName(), deviceRespObj.getServiceProvider());
-            ArrayList<String> personIds = deviceRespObj.getPersonIds();
-            if (personIds != null) {
-                for (int j = 0; j < personIds.size(); j++) {
+            ArrayList<String> userIds = deviceRespObj.getUserIds();
+            if (userIds != null) {
+                for (int j = 0; j < userIds.size(); j++) {
                     mAppDatabase.sessionDao().insert(new Session(deviceRespObj.getDeviceId(),
-                            personIds.get(j)));
+                            userIds.get(j)));
                 }
             }
         }

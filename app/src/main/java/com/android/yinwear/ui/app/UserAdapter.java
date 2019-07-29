@@ -11,13 +11,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.yinwear.R;
-import com.android.yinwear.core.db.entity.PersonDetail;
+import com.android.yinwear.core.db.entity.UserDetail;
 
 import java.util.List;
 
-public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.RecyclerViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.RecyclerViewHolder> {
 
-    private List<PersonDetail> dataSource;
+    private List<UserDetail> dataSource;
     public interface AdapterCallback{
         void onItemClicked(Integer menuPosition);
     }
@@ -27,7 +27,7 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.Recycler
     private Context context;
 
 
-    public PersonsAdapter(Context context, List<PersonDetail> dataArgs, AdapterCallback callback){
+    public UserAdapter(Context context, List<UserDetail> dataArgs, AdapterCallback callback){
         this.context = context;
         this.dataSource = dataArgs;
         this.callback = callback;
@@ -52,13 +52,13 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.Recycler
             super(view);
             menuContainer = view.findViewById(R.id.menu_container);
             menuItem = view.findViewById(R.id.menu_item);
-            menuIcon = view.findViewById(R.id.menu_icon);
+            menuIcon = view.findViewById(R.id.icon);
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
-        PersonDetail data_provider = dataSource.get(position);
+        UserDetail data_provider = dataSource.get(position);
 
         holder.menuItem.setText(data_provider.getFirstName());
 //        holder.menuIcon.setImageResource(data_provider.getImage());

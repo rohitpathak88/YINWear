@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/dark_grey"
+    android:background="@color/white"
     android:padding="@dimen/box_inset_layout_padding"
     tools:deviceIds="wear">
 
@@ -21,6 +21,8 @@
             android:gravity="center"
             android:hint="@string/phone_hint"
             android:inputType="phone"
+            android:textColor="@color/black"
+            android:backgroundTint="@android:color/black"
             android:minWidth="60dp" />
 
         <Button

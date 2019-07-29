@@ -24,8 +24,8 @@ public class DeviceRespObj implements Parcelable {
     @SerializedName("name")
     private String name;
 
-    @SerializedName("person_ids")
-    private ArrayList<String> personIds;
+    @SerializedName("user_ids")
+    private ArrayList<String> userIds;
 
     @SerializedName("serviceProvider")
     private String serviceProvider;
@@ -34,7 +34,7 @@ public class DeviceRespObj implements Parcelable {
         deviceId = in.readString();
         deviceType = in.readString();
         name = in.readString();
-        personIds = in.createStringArrayList();
+        userIds = in.createStringArrayList();
         serviceProvider = in.readString();
     }
 
@@ -60,7 +60,7 @@ public class DeviceRespObj implements Parcelable {
         dest.writeString(deviceId);
         dest.writeString(deviceType);
         dest.writeString(name);
-        dest.writeStringList(personIds);
+        dest.writeStringList(userIds);
         dest.writeString(serviceProvider);
     }
 
@@ -76,8 +76,8 @@ public class DeviceRespObj implements Parcelable {
         return name;
     }
 
-    public ArrayList<String> getPersonIds() {
-        return personIds;
+    public ArrayList<String> getUserIds() {
+        return userIds;
     }
 
     public String getServiceProvider() {
@@ -96,8 +96,8 @@ public class DeviceRespObj implements Parcelable {
         this.name = name;
     }
 
-    public void setPersonIds(ArrayList<String> personIds) {
-        this.personIds = personIds;
+    public void setUserIds(ArrayList<String> userIds) {
+        this.userIds = userIds;
     }
 
     public void setServiceProvider(String serviceProvider) {

@@ -15,7 +15,7 @@ import com.android.yinwear.core.controller.CoreController;
 import com.android.yinwear.core.network.model.request.NetRequest;
 import com.android.yinwear.core.network.model.response.BaseResponse;
 import com.android.yinwear.core.network.model.response.LoginResp;
-import com.android.yinwear.core.network.model.response.PersonsResp;
+import com.android.yinwear.core.network.model.response.UsersResp;
 import com.android.yinwear.core.utils.Constants;
 import com.android.yinwear.core.utils.Utility;
 
@@ -25,7 +25,7 @@ public class SplashActivity extends BaseActivity {
     private String mRestCallbackId;
     private boolean userDataAvailable;
     private boolean isLoggedIn;
-    private PersonsResp mPersonResponse;
+    private UsersResp mUserResponse;
     private String mAuthToken;
     private String mYINAccountId;
 
@@ -62,12 +62,12 @@ public class SplashActivity extends BaseActivity {
         mCoreController.removeCallback(mRestCallbackId);
     }
 
-    private void launchPersonsActivity() {
+    private void launchUserActivity() {
         mHandler.removeMessages(Constants.APP_CONSTANTS.EVENT_RETRY);
         if (userDataAvailable) {
-            Intent intentToPersons = new Intent(SplashActivity.this, PersonsActivity.class);
-            intentToPersons.putExtra("person_resp", mPersonResponse);
-            startActivity(intentToPersons);
+            Intent intentToUsers = new Intent(SplashActivity.this, UserActivity.class);
+            intentToUsers.putExtra("user_resp", mUserResponse);
+            startActivity(intentToUsers);
             finish();
         } else {
             mHandler.sendEmptyMessageDelayed(Constants.APP_CONSTANTS.EVENT_RETRY, 1 * 1000);
@@ -84,16 +84,16 @@ public class SplashActivity extends BaseActivity {
         coreController.addRequest(Constants.NETWORK_REQUEST, loginRequest, false);
     }
 
-    private void processPersonsRequest() {
+    private void processUsersRequest() {
         CoreController coreController = ((YINApplication) this.getApplication()).getCoreController();
 
         Bundle reqParam = new Bundle();
         reqParam.putString("authentication_token", mAuthToken);
         reqParam.putString("yin_account_id", mYINAccountId);
 
-        NetRequest personRequest = new NetRequest(Constants.REQUEST.PERSON_REQUEST, Request.Method.POST,
-                Constants.URL.PERSONS, reqParam);
-        coreController.addRequest(Constants.NETWORK_REQUEST, personRequest, true);
+        NetRequest userRequest = new NetRequest(Constants.REQUEST.USER_REQUEST, Request.Method.POST,
+                Constants.URL.USERS, reqParam);
+        coreController.addRequest(Constants.NETWORK_REQUEST, userRequest, true);
     }
 
     private void processDevicesRequest() {
@@ -133,7 +133,7 @@ public class SplashActivity extends BaseActivity {
             case Constants.REQUEST.DEVICE_REQUEST: {
 //                BaseResponse baseResponse = (BaseResponse) msg.obj;
 //                String responseString = baseResponse.getResponse().toString();
-                processPersonsRequest();
+                processUsersRequest();
 //                if (baseResponse.getResponseCode() == 200) {
 //                } else {
 //                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -148,11 +148,11 @@ public class SplashActivity extends BaseActivity {
 //                }
             }
             return true;
-            case Constants.REQUEST.PERSON_REQUEST: {
+            case Constants.REQUEST.USER_REQUEST: {
                 BaseResponse baseResponse = (BaseResponse) msg.obj;
                 String responseString = baseResponse.getResponse().toString();
                 if (baseResponse.getResponseCode() == 200) {
-                    mPersonResponse = (PersonsResp) Utility.getDataObj(responseString, PersonsResp.class);
+                    mUserResponse = (UsersResp) Utility.getDataObj(responseString, UsersResp.class);
                     userDataAvailable = true;
                 } else {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -168,7 +168,7 @@ public class SplashActivity extends BaseActivity {
             }
             return true;
             case Constants.APP_CONSTANTS.EVENT_RETRY:
-                launchPersonsActivity();
+                launchUserActivity();
                 return true;
         }
         return super.handleMessage1(msg);

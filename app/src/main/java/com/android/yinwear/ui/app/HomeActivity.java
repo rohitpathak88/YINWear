@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.wear.widget.WearableRecyclerView;
 
 import com.android.yinwear.R;
@@ -14,6 +15,7 @@ import com.android.yinwear.core.controller.CoreController;
 import com.android.yinwear.core.db.entity.DeviceDetail;
 import com.android.yinwear.core.network.model.request.NetRequest;
 import com.android.yinwear.core.utils.Constants;
+import com.android.yinwear.ui.widget.PagerIndicatorDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         TextView txtWelcomeHome = findViewById(R.id.text_welcome_home);
-        txtWelcomeHome.setText("Welcome Home " + mPersonDetail.getFirstName());
+        txtWelcomeHome.setText(mUserDetail.getFirstName());
     }
 
     @Override
@@ -41,8 +43,8 @@ public class HomeActivity extends BaseActivity {
 
     private void requestDevicesFromDb() {
         CoreController coreController = ((YINApplication) this.getApplication()).getCoreController();
-        NetRequest deviceRequest = new NetRequest(Constants.REQUEST.DEVICE_LIST_FOR_PERSON_DB_REQUEST, -1,
-                "", mPersonDetail.getPersonId());
+        NetRequest deviceRequest = new NetRequest(Constants.REQUEST.DEVICE_LIST_FOR_USER_DB_REQUEST, -1,
+                "", mUserDetail.getUserId());
         coreController.addRequest(Constants.GET_DATA_FROM_DB, deviceRequest, true);
     }
 
@@ -59,21 +61,29 @@ public class HomeActivity extends BaseActivity {
             return;
         }
         WearableRecyclerView recyclerView = findViewById(R.id.list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        LinearLayoutManager mPagerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(mPagerLayoutManager);
         recyclerView.setAdapter(new DevicesAdapter(this, mDeviceList, new DevicesAdapter.AdapterCallback() {
             @Override
             public void onItemClicked(Integer position) {
                 DeviceDetail deviceDetail = mDeviceList.get(position);
-                Toast.makeText(HomeActivity.this, "Service provider: " + deviceDetail.getService_provider(),
+                Toast.makeText(HomeActivity.this, "Device Name: " + deviceDetail.getName(),
                         Toast.LENGTH_SHORT).show();
             }
         }));
+        PagerSnapHelper mSnapHelper = new PagerSnapHelper();
+        mSnapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.addItemDecoration(new PagerIndicatorDecoration());
+//        mSnapHelper.
     }
 
     @Override
     protected boolean handleMessage1(Message msg) {
         switch (msg.what) {
-            case Constants.REQUEST.DEVICE_LIST_FOR_PERSON_DB_REQUEST: {
+            case Constants.REQUEST.DEVICE_LIST_FOR_USER_DB_REQUEST: {
                 if (msg.obj != null) {
                     mDeviceList = (List<DeviceDetail>) msg.obj;
                     populateDeviceList();

@@ -37,7 +37,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Recycler
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_device, parent, false);
 
         RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
 
@@ -53,7 +53,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Recycler
             super(view);
             menuContainer = view.findViewById(R.id.menu_container);
             menuItem = view.findViewById(R.id.menu_item);
-            menuIcon = view.findViewById(R.id.menu_icon);
+            menuIcon = view.findViewById(R.id.icon);
         }
     }
 

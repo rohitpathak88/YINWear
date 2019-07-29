@@ -42,7 +42,7 @@ public class DeviceDetail implements Parcelable {
         this.service_provider = service_provider;
     }
 
-    protected DeviceDetail(Parcel in) {
+    private DeviceDetail(Parcel in) {
         id = in.readInt();
         deviceId = in.readString();
         deviceType = in.readString();

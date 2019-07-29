@@ -3,38 +3,38 @@ package com.android.yinwear.core.network.model.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.android.yinwear.core.db.entity.PersonDetail;
+import com.android.yinwear.core.db.entity.UserDetail;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class PersonsResp implements Parcelable {
+public class UsersResp implements Parcelable {
     @SerializedName("message")
     private String message;
     @SerializedName("success")
     private boolean success;
 
-    public PersonsResp(String message, boolean success, ArrayList<PersonDetail> personList) {
+    public UsersResp(String message, boolean success, ArrayList<UserDetail> userList) {
         this.message = message;
         this.success = success;
-        this.personList = personList;
+        this.userList = userList;
     }
 
-    protected PersonsResp(Parcel in) {
+    protected UsersResp(Parcel in) {
         message = in.readString();
         success = in.readByte() != 0;
-        personList = in.createTypedArrayList(PersonDetail.CREATOR);
+        userList = in.createTypedArrayList(UserDetail.CREATOR);
     }
 
-    public static final Creator<PersonsResp> CREATOR = new Creator<PersonsResp>() {
+    public static final Creator<UsersResp> CREATOR = new Creator<UsersResp>() {
         @Override
-        public PersonsResp createFromParcel(Parcel in) {
-            return new PersonsResp(in);
+        public UsersResp createFromParcel(Parcel in) {
+            return new UsersResp(in);
         }
 
         @Override
-        public PersonsResp[] newArray(int size) {
-            return new PersonsResp[size];
+        public UsersResp[] newArray(int size) {
+            return new UsersResp[size];
         }
     };
 
@@ -46,12 +46,12 @@ public class PersonsResp implements Parcelable {
         return success;
     }
 
-    public ArrayList<PersonDetail> getPersonList() {
-        return personList;
+    public ArrayList<UserDetail> getUserList() {
+        return userList;
     }
 
-    @SerializedName("persons")
-    private ArrayList<PersonDetail> personList;
+    @SerializedName("users")
+    private ArrayList<UserDetail> userList;
 
     @Override
     public int describeContents() {
@@ -62,6 +62,6 @@ public class PersonsResp implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(message);
         dest.writeByte((byte) (success ? 1 : 0));
-        dest.writeTypedList(personList);
+        dest.writeTypedList(userList);
     }
 }
