@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">YINWear</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_yin">Hello YIN!</string>
+    <string name="login">LOGIN!</string>
+    <string name="phone_hint">Enter Pin</string>
+</resources>

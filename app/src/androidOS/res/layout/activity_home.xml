@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:deviceIds="wear">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/inner_frame_layout_padding">
+
+        <TextView
+            android:id="@+id/text_welcome_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btn_setting"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/text_welcome_home"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/settings" />
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/text_welcome_home"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/yin_logo" />
+
+        <ImageView
+            android:id="@+id/btn_msg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/text_welcome_home"
+            android:layout_alignRight="@id/img_logo"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/message" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/btn_setting">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
