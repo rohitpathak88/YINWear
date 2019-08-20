@@ -30,12 +30,16 @@ public class DeviceRespObj implements Parcelable {
     @SerializedName("serviceProvider")
     private String serviceProvider;
 
+    @SerializedName("pairing_status")
+    private String pairing_status;
+
     protected DeviceRespObj(Parcel in) {
         deviceId = in.readString();
         deviceType = in.readString();
         name = in.readString();
         userIds = in.createStringArrayList();
         serviceProvider = in.readString();
+        pairing_status = in.readString();
     }
 
     public static final Creator<DeviceRespObj> CREATOR = new Creator<DeviceRespObj>() {
@@ -62,6 +66,7 @@ public class DeviceRespObj implements Parcelable {
         dest.writeString(name);
         dest.writeStringList(userIds);
         dest.writeString(serviceProvider);
+        dest.writeString(pairing_status);
     }
 
     public String getDeviceId() {
@@ -102,5 +107,11 @@ public class DeviceRespObj implements Parcelable {
 
     public void setServiceProvider(String serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    public String getPairing_status(){return pairing_status;}
+
+    public void setPairing_status(String pairing_status) {
+        this.pairing_status = pairing_status;
     }
 }
