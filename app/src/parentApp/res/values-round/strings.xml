@@ -1,0 +1,4 @@
+<resources>
+    <string name="hello_yin">Hello YIN!</string>
+    <string name="phone_hint">Enter Pin</string>
+</resources>

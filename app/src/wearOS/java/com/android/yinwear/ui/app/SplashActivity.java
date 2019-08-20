@@ -27,7 +27,6 @@ public class SplashActivity extends BaseActivity {
     private boolean isLoggedIn;
     private UsersResp mUserResponse;
     private String mAuthToken;
-    private String mYINAccountId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,6 @@ public class SplashActivity extends BaseActivity {
             if (!userDataAvailable) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 mAuthToken = sharedPref.getString(Constants.PREFERENCE.AUTH_TOKEN, "");
-                mYINAccountId = sharedPref.getString(Constants.PREFERENCE.ACCOUNT_ID, "");
                 processDevicesRequest();
             }
         }
@@ -89,7 +87,6 @@ public class SplashActivity extends BaseActivity {
 
         Bundle reqParam = new Bundle();
         reqParam.putString("authentication_token", mAuthToken);
-        reqParam.putString("yin_account_id", mYINAccountId);
 
         NetRequest userRequest = new NetRequest(Constants.REQUEST.USER_REQUEST, Request.Method.POST,
                 Constants.URL.USERS, reqParam);
@@ -100,7 +97,6 @@ public class SplashActivity extends BaseActivity {
         CoreController coreController = ((YINApplication) this.getApplication()).getCoreController();
         Bundle reqParam = new Bundle();
         reqParam.putString("authentication_token", mAuthToken);
-        reqParam.putString("yin_account_id", mYINAccountId);
 
         NetRequest deviceRequest = new NetRequest(Constants.REQUEST.DEVICE_REQUEST, Request.Method.POST,
                 Constants.URL.DEVICES, reqParam);
@@ -118,11 +114,9 @@ public class SplashActivity extends BaseActivity {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString(Constants.PREFERENCE.AUTH_TOKEN, loginResp.getAuthToken());
-                    editor.putString(Constants.PREFERENCE.ACCOUNT_ID, loginResp.getYin_account_id());
                     editor.putBoolean(Constants.PREFERENCE.IS_LOGGED_IN, true);
                     isLoggedIn = true;
                     mAuthToken = loginResp.getAuthToken();
-                    mYINAccountId = loginResp.getYin_account_id();
                     editor.apply();
                     processDevicesRequest();
                 } else {
@@ -158,7 +152,6 @@ public class SplashActivity extends BaseActivity {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.remove(Constants.PREFERENCE.AUTH_TOKEN);
-                    editor.remove(Constants.PREFERENCE.ACCOUNT_ID);
                     editor.remove(Constants.PREFERENCE.IS_LOGGED_IN);
                     isLoggedIn = false;
                     editor.apply();

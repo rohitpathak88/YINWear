@@ -8,6 +8,8 @@ public interface Constants {
     int GET_RESPONSE_FROM_DB = 15;
     int GET_DATA_FROM_DB = 16;
 
+    String BASE_URL = "http://yin2.schwarzsoftware.com.au:6543/api/v1/";
+
     interface REQUEST {
         int LOGIN_REQUEST = 101;
         int USER_REQUEST = 102;
@@ -20,14 +22,13 @@ public interface Constants {
     }
 
     interface URL {
-        String LOGIN = "http://yin2.schwarzsoftware.com.au/cgi-bin/v1_login";
-        String USERS = "http://yin2.schwarzsoftware.com.au/cgi-bin/v1_users";
-        String DEVICES = "http://yin2.schwarzsoftware.com.au/cgi-bin/v1_devices";
+        String LOGIN = BASE_URL+"login";
+        String USERS = BASE_URL+"users";
+        String DEVICES = BASE_URL+"devices";
     }
 
     interface PREFERENCE {
         String AUTH_TOKEN = "authentication_token";
-        String ACCOUNT_ID = "yin_account_id";
         String IS_LOGGED_IN = "is_logged_in";
     }
 }
