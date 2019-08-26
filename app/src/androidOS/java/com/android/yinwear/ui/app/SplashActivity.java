@@ -45,7 +45,11 @@ public class SplashActivity extends BaseActivity {
         mRestCallbackId = mCoreController.registerCallback(mHandler);
         mHandler.sendEmptyMessageDelayed(Constants.APP_CONSTANTS.EVENT_RETRY, 3 * 1000);
         if (!isLoggedIn) {
-            processLoginRequest();
+            //TODO CHANGE
+//            processLoginRequest();
+            Intent intentToUsers = new Intent(SplashActivity.this, PairingAcceptanceActivity.class);
+            startActivity(intentToUsers);
+            finish();
         } else {
             if (!userDataAvailable) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);

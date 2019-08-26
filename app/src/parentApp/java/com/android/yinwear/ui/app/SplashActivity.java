@@ -64,7 +64,7 @@ public class SplashActivity extends BaseActivity {
             finish();
         } else {
             if (userDataAvailable) {
-                Intent intentToUsers = new Intent(SplashActivity.this, UserActivity.class);
+                Intent intentToUsers = new Intent(SplashActivity.this, HomeActivity.class);
                 intentToUsers.putExtra("user_resp", mUserResponse);
                 startActivity(intentToUsers);
                 finish();

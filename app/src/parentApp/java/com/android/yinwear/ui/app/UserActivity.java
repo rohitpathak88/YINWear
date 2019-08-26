@@ -1,15 +1,12 @@
 package com.android.yinwear.ui.app;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Parcelable;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.wear.widget.WearableRecyclerView;
 
 import com.android.yinwear.R;
 import com.android.yinwear.core.db.entity.UserDetail;

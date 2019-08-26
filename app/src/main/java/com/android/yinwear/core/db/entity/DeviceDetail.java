@@ -32,56 +32,19 @@ public class DeviceDetail implements Parcelable {
     @ColumnInfo(name = "service_provider")
     private String service_provider;
 
+    @SerializedName("pairing_status")
+    @ColumnInfo(name = "pairing_status")
+    private String pairing_status;
+
     public DeviceDetail() {
-    }
-
-    public DeviceDetail(String deviceId, String deviceType, String name, String service_provider) {
-        this.deviceId = deviceId;
-        this.deviceType = deviceType;
-        this.name = name;
-        this.service_provider = service_provider;
-    }
-
-    private DeviceDetail(Parcel in) {
-        id = in.readInt();
-        deviceId = in.readString();
-        deviceType = in.readString();
-        name = in.readString();
-        service_provider = in.readString();
-    }
-
-    public static final Creator<DeviceDetail> CREATOR = new Creator<DeviceDetail>() {
-        @Override
-        public DeviceDetail createFromParcel(Parcel in) {
-            return new DeviceDetail(in);
-        }
-
-        @Override
-        public DeviceDetail[] newArray(int size) {
-            return new DeviceDetail[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(deviceId);
-        dest.writeString(deviceType);
-        dest.writeString(name);
-        dest.writeString(service_provider);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDeviceId() {
@@ -115,4 +78,57 @@ public class DeviceDetail implements Parcelable {
     public void setService_provider(String service_provider) {
         this.service_provider = service_provider;
     }
+
+    public String getPairing_status() {
+        return pairing_status;
+    }
+
+    public void setPairing_status(String pairing_status) {
+        this.pairing_status = pairing_status;
+    }
+
+    public DeviceDetail(String deviceId, String deviceType, String name, String service_provider, String pairing_status) {
+        this.deviceId = deviceId;
+        this.deviceType = deviceType;
+        this.name = name;
+        this.service_provider = service_provider;
+        this.pairing_status = pairing_status;
+    }
+
+    protected DeviceDetail(Parcel in) {
+        id = in.readInt();
+        deviceId = in.readString();
+        deviceType = in.readString();
+        name = in.readString();
+        service_provider = in.readString();
+        pairing_status = in.readString();
+    }
+
+    public static final Creator<DeviceDetail> CREATOR = new Creator<DeviceDetail>() {
+        @Override
+        public DeviceDetail createFromParcel(Parcel in) {
+            return new DeviceDetail(in);
+        }
+
+        @Override
+        public DeviceDetail[] newArray(int size) {
+            return new DeviceDetail[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(deviceId);
+        dest.writeString(deviceType);
+        dest.writeString(name);
+        dest.writeString(service_provider);
+        dest.writeString(pairing_status);
+    }
+
 }

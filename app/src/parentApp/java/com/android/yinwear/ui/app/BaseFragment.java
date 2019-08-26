@@ -1,29 +1,25 @@
 package com.android.yinwear.ui.app;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.android.yinwear.YINApplication;
 import com.android.yinwear.core.controller.CoreController;
-import com.android.yinwear.core.db.entity.UserDetail;
 
-public class BaseActivity extends AppCompatActivity implements Handler.Callback {
+public class BaseFragment extends Fragment implements Handler.Callback {
 
     protected Handler mHandler;
     protected CoreController mCoreController;
-    protected UserDetail mUserDetail;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHandler = new Handler(this);
-        mCoreController = ((YINApplication) this.getApplication()).getCoreController();
-        mUserDetail = getIntent().getParcelableExtra("user");
+        mCoreController = ((YINApplication) getContext().getApplicationContext()).getCoreController();
     }
 
     @Override

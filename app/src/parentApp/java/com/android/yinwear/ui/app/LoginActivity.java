@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void launchUserActivity() {
         setProgressBarIndeterminateVisibility(false);
-        Intent intentToUsers = new Intent(LoginActivity.this, UserActivity.class);
+        Intent intentToUsers = new Intent(LoginActivity.this, HomeActivity.class);
         intentToUsers.putExtra("user_resp", mUserResponse);
         startActivity(intentToUsers);
         finish();

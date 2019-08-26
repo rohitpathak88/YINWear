@@ -13,6 +13,8 @@ import com.google.gson.JsonSyntaxException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Utility {
 
     private static final String TAG = "Utility";
@@ -56,5 +58,9 @@ public class Utility {
         boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
         Log.d(TAG, "Utility: isNetworkAvailable()> " + isConnected);
         return isConnected;
+    }
+
+    public static String generatePairingCode() {
+        return String.valueOf(ThreadLocalRandom.current().nextInt(0, 999998 + 1));
     }
 }

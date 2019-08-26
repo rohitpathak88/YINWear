@@ -17,7 +17,6 @@
             android:id="@+id/edt_pin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/black"
             android:gravity="center"
             android:hint="@string/phone_hint"
             android:inputType="phone"

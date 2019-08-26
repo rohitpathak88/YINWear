@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    tools:deviceIds="wear">
+
+    <RelativeLayout
+        android:id="@+id/layout_pairing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp">
+
+        <TextView
+            android:id="@+id/txt_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Please enter the pairing code"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/edt_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_label"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
+            android:hint="CODE"
+            android:inputType="phone"
+            android:minWidth="70dp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_pin"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="Submit" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_confirmation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/txt_label2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="left"
+            android:text="To complete pairing, ask your account holder to enter this confirmation code"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/txt_confirmation_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_label2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
+            android:hint="CODE"
+            android:minWidth="70dp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_check_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_confirmation_pin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="Check Pairing Status" />
+
+    </RelativeLayout>
+</RelativeLayout>

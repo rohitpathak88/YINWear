@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.wear.widget.WearableRecyclerView;
 
 import com.android.yinwear.R;
 import com.android.yinwear.core.db.entity.UserDetail;

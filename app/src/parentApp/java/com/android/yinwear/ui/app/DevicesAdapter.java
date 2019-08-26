@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +38,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Recycler
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_device, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_devices, parent, false);
 
         RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
 
@@ -47,6 +48,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Recycler
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout menuContainer;
         TextView menuItem;
+        TextView txtStatus;
         ImageView menuIcon;
 
         public RecyclerViewHolder(View view) {
@@ -54,6 +56,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Recycler
             menuContainer = view.findViewById(R.id.menu_container);
             menuItem = view.findViewById(R.id.menu_item);
             menuIcon = view.findViewById(R.id.icon);
+            txtStatus = view.findViewById(R.id.txt_status);
         }
     }
 
@@ -62,16 +65,27 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Recycler
         DeviceDetail data_provider = dataSource.get(position);
 
         holder.menuItem.setText(data_provider.getName());
+        holder.txtStatus.setText(data_provider.getPairing_status());
+//        if ("UNPAIRED".equalsIgnoreCase(data_provider.getPairing_status())) {
+//            holder.txtStatus.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(context, "device clicked", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
 //        holder.menuIcon.setImageResource(data_provider.getImage());
-        holder.menuContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
+//        if ("UNPAIRED".equalsIgnoreCase(data_provider.getPairing_status())) {
+            holder.menuContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
 
-                if (callback != null) {
-                    callback.onItemClicked(position);
+                    if (callback != null) {
+                        callback.onItemClicked(position);
+                    }
                 }
-            }
-        });
+            });
+//        }
     }
 
     @Override

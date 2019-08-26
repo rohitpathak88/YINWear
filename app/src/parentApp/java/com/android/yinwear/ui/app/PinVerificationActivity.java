@@ -56,11 +56,11 @@ public class PinVerificationActivity extends BaseActivity implements View.OnClic
                     Toast.makeText(this, "Enter Pin", Toast.LENGTH_LONG).show();
                 } else {
                     if (mUserDetail.getPin().equals(text.toString())) {
-                        Toast.makeText(this, "Pin Verified!", Toast.LENGTH_SHORT).show();
-                        Intent intentToHome = new Intent(PinVerificationActivity.this, HomeActivity.class);
-                        intentToHome.putExtra("user", mUserDetail);
-                        startActivity(intentToHome);
-                        finish();
+//                        Toast.makeText(this, "Pin Verified!", Toast.LENGTH_SHORT).show();
+//                        Intent intentToHome = new Intent(PinVerificationActivity.this, HomeActivity.class);
+//                        intentToHome.putExtra("user", mUserDetail);
+//                        startActivity(intentToHome);
+//                        finish();
                     } else {
                         Toast.makeText(this, "Pin Mismatch! Please retry!", Toast.LENGTH_SHORT).show();
                     }

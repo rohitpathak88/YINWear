@@ -10,8 +10,8 @@ import android.util.Log;
 import com.android.yinwear.YINApplication;
 import com.android.yinwear.core.db.AppDatabase;
 import com.android.yinwear.core.db.entity.DeviceDetail;
-import com.android.yinwear.core.db.entity.UserDetail;
 import com.android.yinwear.core.db.entity.Session;
+import com.android.yinwear.core.db.entity.UserDetail;
 import com.android.yinwear.core.network.NetworkManager;
 import com.android.yinwear.core.network.model.request.NetRequest;
 import com.android.yinwear.core.network.model.response.BaseResponse;
@@ -186,7 +186,7 @@ public class CoreController extends EventLooper implements Handler.Callback {
     private void getDataFromDb(NetRequest reqObj) {
         Object data = null;
         switch (reqObj.getRequestId()) {
-            case Constants.REQUEST.DEVICE_LIST_FOR_USER_DB_REQUEST:
+            case Constants.REQUEST.DEVICE_LIST_FOR_USER_DB_REQUEST: {
                 List<String> deviceIds = mAppDatabase.sessionDao().loadDevicesByUserIds(
                         new String[]{(String) reqObj.getRequestParam()});
                 List<DeviceDetail> deviceList = new ArrayList<>();
@@ -199,7 +199,13 @@ public class CoreController extends EventLooper implements Handler.Callback {
                     }
                 }
                 data = deviceList;
-                break;
+            }
+            break;
+            case Constants.REQUEST.DEVICE_LIST_ALL_DB_REQUEST: {
+                List<DeviceDetail> allDevices = mAppDatabase.deviceDao().getAll();
+                data = allDevices;
+            }
+            break;
         }
         notifyGUI(reqObj.getRequestId(), data);
     }
@@ -286,7 +292,7 @@ public class CoreController extends EventLooper implements Handler.Callback {
         for (int i = 0; i < deviceRespObjs.size(); i++) {
             DeviceRespObj deviceRespObj = deviceRespObjs.get(i);
             deviceArray[i] = new DeviceDetail(deviceRespObj.getDeviceId(), deviceRespObj.getDeviceType(),
-                    deviceRespObj.getName(), deviceRespObj.getServiceProvider());
+                    deviceRespObj.getName(), deviceRespObj.getServiceProvider(), deviceRespObj.getPairing_status());
             ArrayList<String> userIds = deviceRespObj.getUserIds();
             if (userIds != null) {
                 for (int j = 0; j < userIds.size(); j++) {

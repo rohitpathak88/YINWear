@@ -10,4 +10,7 @@
     <string name="account_id">YIN Account ID</string>
     <string name="password">Password</string>
     <string name="show_users">Show users</string>
+    <string name="title_activity_landing">LandingActivity</string>
+    <string name="tab_text_1">Devices</string>
+    <string name="tab_text_2">Users</string>
 </resources>
